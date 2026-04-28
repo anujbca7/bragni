@@ -35,10 +35,7 @@ function renderNavbar() {
           <a href="index.html" class="nav-logo">
             <img class="nav-logo-img" src="assets/img/logo.png" alt="Inflanar"
               onerror="this.style.display='none'">
-            <div>
-              <div class="nav-logo-text">Infla<span>nar</span></div>
-              <div class="nav-logo-sub">Influencer Hiring Platform</div>
-            </div>
+          
           </a>
 
           <ul class="nav-links">${linksHTML}</ul>
@@ -170,8 +167,8 @@ function renderFooter() {
       <div class="container">
         <div class="footer-grid">
           <div>
-            <div class="footer-logo-text">Infla<span>nar</span></div>
-            <div class="footer-logo-sub">Influencer Hiring Platform</div>
+  <img class="nav-logo-img" src="assets/img/logo.png" alt="Inflanar"
+              onerror="this.style.display='none'">
             <div class="footer-about">Want to Create Something Great Together?</div>
             <div class="footer-email">Get in Touch..<br>${INFLANAR.site.email}</div>
           </div>
