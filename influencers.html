@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Influencers — Inflanar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .inf-search-bar{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--r-lg);padding:20px 24px;box-shadow:var(--shadow-sm);margin:32px 0;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+    .inf-search-input{flex:1;min-width:160px;padding:11px 16px;border:1.5px solid var(--gray-200);border-radius:var(--r-sm);font-size:13px;color:var(--text-dark);background:var(--white);outline:none;transition:var(--t)}
+    .inf-search-input:focus{border-color:var(--purple)}
+    .inf-search-select{flex:1;min-width:140px;padding:11px 16px;border:1.5px solid var(--gray-200);border-radius:var(--r-sm);font-size:13px;color:var(--text-dark);background:var(--white);outline:none;cursor:pointer;transition:var(--t)}
+    .inf-search-select:focus{border-color:var(--purple)}
+  </style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+<div id="page-hero-placeholder"></div>
+<div class="container" style="padding-bottom:80px">
+  <div class="inf-search-bar">
+    <input type="text" class="inf-search-input" id="kw-input" placeholder="Keyword" oninput="filterInfluencers()">
+    <select class="inf-search-select" id="cat-select" onchange="filterInfluencers()">
+      <option value="">Select Category</option>
+    </select>
+    <select class="inf-search-select" id="price-select" onchange="filterInfluencers()">
+      <option value="">Sort by Price</option>
+      <option value="asc">Low to High</option>
+      <option value="desc">High to Low</option>
+    </select>
+    <select class="inf-search-select" id="rating-select" onchange="filterInfluencers()">
+      <option value="">Rating</option>
+      <option value="5">5 Stars</option>
+      <option value="4">4+ Stars</option>
+    </select>
+    <button class="btn btn-pink" onclick="filterInfluencers()" style="padding:11px 28px;font-size:13px">Search</button>
+  </div>
+  <div class="influencer-grid" id="inf-grid"></div>
+  <div class="pagination" id="pagination" style="padding-top:8px"></div>
+</div>
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+<script src="data/data.js"></script><script src="js/main.js"></script>
+<script>
+let infPage=1; const infPer=8;
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPageHero('Influencers',[{label:'Home',href:'index.html'},{label:'Influencers',href:'#'}]);
+  const sel=document.getElementById('cat-select');
+  INFLANAR.categories.forEach(c=>sel.innerHTML+=`<option value="${c.slug}">${c.name}</option>`);
+  renderInfluencers(INFLANAR.influencers);
+  setTimeout(initReveal,80);
+});
+function filterInfluencers(){
+  const kw=document.getElementById('kw-input').value.toLowerCase();
+  const cat=document.getElementById('cat-select').value;
+  let data=INFLANAR.influencers.filter(i=>{
+    if(kw&&!i.name.toLowerCase().includes(kw)&&!i.category.toLowerCase().includes(kw)) return false;
+    if(cat&&!i.category.toLowerCase().replace(/\s+/g,'-').includes(cat)) return false;
+    return true;
+  });
+  renderInfluencers(data);
+}
+function renderInfluencers(data){
+  const start=(infPage-1)*infPer,end=start+infPer,pageData=data.slice(start,end);
+  document.getElementById('inf-grid').innerHTML=pageData.length
+    ? pageData.map(i=>influencerCardHTML(i)).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:80px;color:var(--text-light)">No influencers found.</div>`;
+  const total=Math.ceil(data.length/infPer);
+  document.getElementById('pagination').innerHTML=[...Array(total)].map((_,i)=>
+    `<button class="page-btn ${i+1===infPage?'active':''}" onclick="infPage=${i+1};filterInfluencers()">${i+1}</button>`).join('');
+  setTimeout(initReveal,40);
+}
+</script>
+</body>
+</html>

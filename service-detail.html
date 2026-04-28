@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Service Detail — Inflanar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Page Layout ────────────────────────────────────── */
+    .svc-detail-layout {
+      display:grid;
+      grid-template-columns:1fr 260px;
+      gap:28px;
+      padding:40px 0 80px;
+      align-items:start;
+    }
+
+    /* ── Main Card ──────────────────────────────────────── */
+    .svc-main-card {
+      background:var(--white);
+      border:1px solid var(--gray-200);
+      border-radius:var(--r-xl);
+      overflow:hidden;
+      box-shadow:var(--shadow-card);
+    }
+    .svc-main-img {
+      width:100%;
+      aspect-ratio:16/9;
+      object-fit:cover;
+      background:var(--gray-100);
+      display:block;
+    }
+    .svc-main-body { padding:28px 32px; }
+    .svc-main-title {
+      font-family:var(--ff-display);
+      font-size:clamp(22px,3vw,30px);
+      font-weight:800;
+      color:var(--text-dark);
+      margin-bottom:22px;
+    }
+
+    /* ── Tabs ───────────────────────────────────────────── */
+    .svc-tabs {
+      display:flex;
+      gap:0;
+      margin-bottom:28px;
+      border-bottom:1px solid var(--gray-200);
+    }
+    .svc-tab {
+      padding:11px 22px;
+      font-size:13.5px;
+      font-weight:600;
+      cursor:pointer;
+      border:none;
+      background:none;
+      color:var(--text-mid);
+      border-bottom:2.5px solid transparent;
+      margin-bottom:-1px;
+      transition:var(--t);
+      display:flex;
+      align-items:center;
+      gap:7px;
+    }
+    .svc-tab:hover { color:var(--purple); }
+    .svc-tab.active {
+      color:var(--white);
+      background:linear-gradient(135deg,var(--pink-dark),var(--pink));
+      border-radius:var(--r-sm) var(--r-sm) 0 0;
+      border-bottom-color:transparent;
+    }
+    .svc-tab-icon {
+      width:22px;height:22px;border-radius:50%;
+      background:rgba(255,255,255,.25);
+      display:flex;align-items:center;justify-content:center;
+      font-size:11px;
+    }
+    .svc-tab-panel { display:none; }
+    .svc-tab-panel.active { display:block; }
+
+    /* Tab: Description */
+    .svc-desc-text {
+      font-size:14px;
+      color:var(--text-mid);
+      line-height:1.85;
+      margin-bottom:24px;
+    }
+    .pkg-features-title {
+      font-family:var(--ff-display);
+      font-size:18px;
+      font-weight:700;
+      color:var(--text-dark);
+      margin-bottom:16px;
+    }
+    .pkg-features-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px 32px;
+    }
+    .pkg-feat-item {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13.5px;
+      color:var(--text-mid);
+    }
+    .pkg-feat-check {
+      color:var(--purple);
+      font-weight:700;
+      font-size:14px;
+      flex-shrink:0;
+    }
+
+    /* Tab: Availability */
+    .avail-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    .avail-item {
+      background:var(--light-bg);
+      border-radius:var(--r-md);
+      padding:16px 20px;
+      border:1px solid var(--gray-200);
+    }
+    .avail-label {
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      color:var(--text-light);
+      margin-bottom:6px;
+    }
+    .avail-val {
+      font-size:14px;
+      font-weight:600;
+      color:var(--text-dark);
+    }
+    .avail-days {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:16px;
+    }
+    .avail-day {
+      padding:5px 14px;
+      border-radius:var(--r-full);
+      font-size:12px;
+      font-weight:600;
+      background:rgba(108,58,255,.08);
+      color:var(--purple);
+      border:1px solid rgba(108,58,255,.2);
+    }
+
+    /* Tab: Reviews */
+    .review-item {
+      display:flex;
+      gap:14px;
+      padding:18px 0;
+      border-bottom:1px solid var(--gray-200);
+    }
+    .review-item:last-child { border-bottom:none; }
+    .review-avatar {
+      width:46px;height:46px;border-radius:50%;
+      object-fit:cover;flex-shrink:0;
+      background:var(--gray-200);
+    }
+    .review-meta { display:flex;align-items:center;justify-content:space-between;margin-bottom:6px; }
+    .review-name { font-size:14px;font-weight:700;color:var(--text-dark); }
+    .review-date { font-size:12px;color:var(--text-light); }
+    .review-stars { color:var(--orange);font-size:13px;margin-bottom:6px; }
+    .review-text { font-size:13.5px;color:var(--text-mid);line-height:1.7; }
+
+    /* ── Right Sidebar ──────────────────────────────────── */
+    .svc-sidebar { position:sticky;top:80px;display:flex;flex-direction:column;gap:20px; }
+
+    /* Package card */
+    .pkg-card {
+      background:var(--white);
+      border:1px solid var(--gray-200);
+      border-radius:var(--r-xl);
+      overflow:hidden;
+      box-shadow:var(--shadow-card);
+    }
+    .pkg-card-header {
+      background:linear-gradient(135deg,var(--pink-dark),var(--pink));
+      padding:16px 20px;
+      text-align:center;
+    }
+    .pkg-card-title {
+      font-size:13px;
+      font-weight:700;
+      color:rgba(255,255,255,.85);
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+    .pkg-price-bubble {
+      width:82px;height:82px;border-radius:50%;
+      background:var(--white);
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto;
+      box-shadow:0 4px 16px rgba(255,45,120,.3);
+    }
+    .pkg-price {
+      font-family:var(--ff-display);
+      font-size:22px;font-weight:800;color:var(--text-dark);
+    }
+    .pkg-card-body { padding:20px; }
+    .pkg-feature-list {
+      display:flex;flex-direction:column;gap:9px;margin-bottom:20px;
+    }
+    .pkg-feat-row {
+      display:flex;align-items:center;gap:8px;
+      font-size:13px;color:var(--text-mid);
+    }
+    .pkg-feat-row .ck { color:var(--purple);font-weight:700;font-size:13px; }
+    .pkg-book-btn {
+      width:100%;padding:13px;
+      background:linear-gradient(135deg,var(--pink-dark),var(--pink));
+      border:none;border-radius:var(--r-sm);
+      font-size:14px;font-weight:700;color:var(--white);
+      cursor:pointer;transition:var(--t);box-shadow:var(--shadow-pink);
+    }
+    .pkg-book-btn:hover { transform:translateY(-2px);box-shadow:0 12px 32px rgba(255,45,120,.5); }
+
+    /* Influencer mini card */
+    .inf-mini-card {
+      background:linear-gradient(160deg,var(--light-pink) 0%,var(--light-bg) 100%);
+      border:1px solid var(--gray-200);
+      border-radius:var(--r-xl);
+      padding:22px 18px;
+      text-align:center;
+      box-shadow:var(--shadow-card);
+    }
+    .inf-mini-avatar {
+      width:80px;height:80px;border-radius:50%;object-fit:cover;
+      border:3px solid var(--white);box-shadow:var(--shadow-md);
+      margin:0 auto 12px;display:block;background:var(--gray-200);
+    }
+    .inf-mini-name {
+      font-family:var(--ff-display);font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:3px;
+    }
+    .inf-mini-cat { font-size:12px;color:var(--text-light);margin-bottom:14px; }
+    .inf-mini-stats {
+      display:flex;justify-content:space-around;
+      padding:12px 0;border-top:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200);
+      margin-bottom:14px;
+    }
+    .inf-mini-stat-val { font-size:14px;font-weight:700;color:var(--text-dark); }
+    .inf-mini-stat-lbl { font-size:11px;color:var(--text-light); }
+    .inf-mini-profile-btn {
+      width:100%;padding:9px;border-radius:var(--r-sm);
+      border:1.5px solid var(--gray-200);background:var(--white);
+      font-size:13px;font-weight:600;color:var(--text-dark);
+      cursor:pointer;transition:var(--t);
+    }
+    .inf-mini-profile-btn:hover { background:var(--purple);border-color:var(--purple);color:var(--white); }
+
+    @media(max-width:900px){
+      .svc-detail-layout{ grid-template-columns:1fr; }
+      .svc-sidebar{ position:static; }
+      .avail-grid{ grid-template-columns:1fr; }
+    }
+    @media(max-width:560px){
+      .pkg-features-grid{ grid-template-columns:1fr; }
+      .svc-main-body{ padding:20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="navbar-placeholder"></div>
+<div id="page-hero-placeholder"></div>
+
+<div class="container">
+  <div class="svc-detail-layout">
+
+    <!-- ── MAIN CONTENT ─────────────────────────────────── -->
+    <div>
+      <div class="svc-main-card reveal">
+        <img class="svc-main-img" id="svc-img" src="" alt=""
+          onerror="this.src='https://placehold.co/760x427/F5F3FF/6C3AFF?text=Service'">
+        <div class="svc-main-body">
+          <h1 class="svc-main-title" id="svc-title"></h1>
+
+          <!-- Tabs -->
+          <div class="svc-tabs">
+            <button class="svc-tab active" onclick="switchSvcTab('desc',this)">
+              <span class="svc-tab-icon">📋</span> Description
+            </button>
+            <button class="svc-tab" onclick="switchSvcTab('avail',this)">
+              <span class="svc-tab-icon">🕐</span> Availability
+            </button>
+            <button class="svc-tab" onclick="switchSvcTab('reviews',this)" id="review-tab-btn">
+              <span class="svc-tab-icon">👤</span> Reviews (<span id="review-count">0</span>)
+            </button>
+          </div>
+
+          <!-- Panel: Description -->
+          <div class="svc-tab-panel active" id="panel-desc">
+            <div class="svc-desc-text" id="svc-desc"></div>
+            <div class="pkg-features-title">Package Features</div>
+            <div class="pkg-features-grid" id="pkg-feats-desc"></div>
+          </div>
+
+          <!-- Panel: Availability -->
+          <div class="svc-tab-panel" id="panel-avail">
+            <div class="avail-grid" id="avail-grid"></div>
+            <div style="margin-top:20px">
+              <div class="pkg-features-title">Working Days</div>
+              <div class="avail-days" id="avail-days"></div>
+            </div>
+          </div>
+
+          <!-- Panel: Reviews -->
+          <div class="svc-tab-panel" id="panel-reviews">
+            <div id="reviews-list"></div>
+            <div id="no-reviews" style="text-align:center;padding:40px;color:var(--text-light);display:none">
+              No reviews yet. Be the first to review!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SIDEBAR ───────────────────────────────────────── -->
+    <div class="svc-sidebar">
+
+      <!-- My Package -->
+      <div class="pkg-card reveal">
+        <div class="pkg-card-header">
+          <div class="pkg-card-title">My Package</div>
+          <div class="pkg-price-bubble">
+            <div class="pkg-price" id="pkg-price">$0.00</div>
+          </div>
+        </div>
+        <div class="pkg-card-body">
+          <div class="pkg-feature-list" id="pkg-feats-sidebar"></div>
+          <button class="pkg-book-btn" onclick="handleBookNow()">Book Now</button>
+        </div>
+      </div>
+
+      <!-- Influencer mini card -->
+      <div class="inf-mini-card reveal" id="inf-mini-card"></div>
+
+    </div>
+  </div>
+</div>
+
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+
+<script src="data/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const params  = new URLSearchParams(location.search);
+  const svcId   = params.get('id') || 's005';
+  const svcData = INFLANAR.service_detail[svcId] || INFLANAR.service_detail['s005'];
+
+  document.title = `${svcData.title} — Inflanar`;
+  renderPageHero(svcData.title, [
+    {label:'Home',     href:'index.html'   },
+    {label:'Services', href:'services.html'}
+  ]);
+
+  /* Main image & title */
+  const img = document.getElementById('svc-img');
+  img.src = svcData.img;
+  img.alt = svcData.title;
+  document.getElementById('svc-title').textContent = svcData.title;
+
+  /* Review count */
+  document.getElementById('review-count').textContent = svcData.reviews.length;
+
+  /* ── Description tab ── */
+  document.getElementById('svc-desc').innerHTML = svcData.description;
+  document.getElementById('pkg-feats-desc').innerHTML =
+    svcData.package_features.map(f => `
+      <div class="pkg-feat-item">
+        <span class="pkg-feat-check">✓</span>
+        <span>${f}</span>
+      </div>`).join('');
+
+  /* ── Availability tab ── */
+  const av = svcData.availability;
+  document.getElementById('avail-grid').innerHTML = `
+    <div class="avail-item">
+      <div class="avail-label">Response Time</div>
+      <div class="avail-val">${av.response_time}</div>
+    </div>
+    <div class="avail-item">
+      <div class="avail-label">Delivery Time</div>
+      <div class="avail-val">${av.delivery_time}</div>
+    </div>
+    <div class="avail-item">
+      <div class="avail-label">Working Hours</div>
+      <div class="avail-val">${av.hours}</div>
+    </div>
+    <div class="avail-item">
+      <div class="avail-label">Status</div>
+      <div class="avail-val" style="color:var(--purple)">Available</div>
+    </div>`;
+  document.getElementById('avail-days').innerHTML =
+    av.days.map(d => `<span class="avail-day">${d}</span>`).join('');
+
+  /* ── Reviews tab ── */
+  if (svcData.reviews.length) {
+    document.getElementById('reviews-list').innerHTML = svcData.reviews.map(r => `
+      <div class="review-item">
+        <img class="review-avatar" src="${r.avatar}" alt="${r.name}"
+          onerror="this.src='https://placehold.co/46x46/c8b8f5/6C3AFF?text=${r.name.split(' ').map(n=>n[0]).join('')}'">
+        <div style="flex:1">
+          <div class="review-meta">
+            <span class="review-name">${r.name}</span>
+            <span class="review-date">${r.date}</span>
+          </div>
+          <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+          <div class="review-text">${r.text}</div>
+        </div>
+      </div>`).join('');
+  } else {
+    document.getElementById('no-reviews').style.display = 'block';
+  }
+
+  /* ── Package sidebar ── */
+  document.getElementById('pkg-price').textContent = `$${svcData.package.price.toFixed(2)}`;
+  document.getElementById('pkg-feats-sidebar').innerHTML =
+    svcData.package.features.map(f => `
+      <div class="pkg-feat-row">
+        <span class="ck">✓</span>
+        <span>${f}</span>
+      </div>`).join('');
+
+  /* ── Influencer mini card ── */
+  const inf = INFLANAR.influencers.find(i => i.id === svcData.influencer_id) || INFLANAR.influencers[1];
+  document.getElementById('inf-mini-card').innerHTML = `
+    <img class="inf-mini-avatar" src="${inf.avatar}" alt="${inf.name}"
+      onerror="this.src='https://placehold.co/80x80/c8b8f5/6C3AFF?text=${inf.name.split(' ').map(n=>n[0]).join('')}'">
+    <div class="inf-mini-name">${inf.name}</div>
+    <div class="inf-mini-cat">${inf.category}</div>
+    <div class="inf-mini-stats">
+      <div>
+        <div class="inf-mini-stat-val">${inf.followers}</div>
+        <div class="inf-mini-stat-lbl">Followers</div>
+      </div>
+      <div>
+        <div class="inf-mini-stat-val">${inf.following}</div>
+        <div class="inf-mini-stat-lbl">Following</div>
+      </div>
+    </div>
+    <button class="inf-mini-profile-btn"
+      onclick="location.href='influencer-profile.html?slug=${inf.slug}'">
+      View Profile
+    </button>`;
+
+  setTimeout(initReveal, 80);
+});
+
+/* ── Tab switching ── */
+function switchSvcTab(id, btn) {
+  document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.svc-tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+/* ── Book Now ── */
+function handleBookNow() {
+  const btn = document.querySelector('.pkg-book-btn');
+  btn.textContent = 'Processing...'; btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '✓ Booked!';
+    btn.style.background = 'linear-gradient(135deg,var(--purple-dark),var(--purple))';
+    setTimeout(() => {
+      btn.textContent = 'Book Now';
+      btn.disabled = false;
+      btn.style.background = '';
+    }, 2500);
+  }, 800);
+}
+</script>
+</body>
+</html>

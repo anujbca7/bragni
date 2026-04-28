@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Our Blogs — Inflanar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .blogs-layout{display:grid;grid-template-columns:1fr 280px;gap:32px;padding:36px 0 80px;align-items:start}
+    .blogs-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    @media(max-width:900px){.blogs-layout{grid-template-columns:1fr}}
+    @media(max-width:560px){.blogs-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+<div id="page-hero-placeholder"></div>
+<div class="container">
+  <div class="blogs-layout">
+    <!-- MAIN -->
+    <div>
+      <div class="blogs-grid" id="blogs-grid"></div>
+      <div class="pagination" id="blog-pagination" style="margin-top:32px"></div>
+    </div>
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="sidebar-box">
+        <div class="sidebar-title">Search</div>
+        <div class="sidebar-search">
+          <input type="text" id="blog-kw" placeholder="Search" oninput="filterBlogs()">
+          <button class="sidebar-search-btn" onclick="filterBlogs()">🔍</button>
+        </div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">Popular Post</div>
+        <div id="popular-posts"></div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">Blog Categories</div>
+        <div id="blog-cats"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+<script src="data/data.js"></script><script src="js/main.js"></script>
+<script>
+let blogPage=1; const blogPer=6; let filteredBlogs=INFLANAR.blogs;
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPageHero('Our Blogs',[{label:'Home',href:'index.html'},{label:'Our Blogs',href:'#'}]);
+  renderBlogGrid(INFLANAR.blogs);
+  // Popular posts sidebar
+  document.getElementById('popular-posts').innerHTML=INFLANAR.blogs.slice(0,4).map(b=>`
+    <a href="blog-detail.html?id=${b.id}" class="popular-post-item">
+      <img class="popular-post-img" src="${b.img}" alt="${b.title}"
+        onerror="this.src='https://placehold.co/52x44/F5F3FF/6C3AFF?text=Blog'">
+      <div>
+        <div class="popular-post-title">${b.title}</div>
+        <div class="popular-post-date">📅 ${b.date}</div>
+      </div>
+    </a>`).join('');
+  // Categories
+  const cats=[...new Set(INFLANAR.blogs.map(b=>b.category))];
+  document.getElementById('blog-cats').innerHTML=cats.map(c=>{
+    const count=INFLANAR.blogs.filter(b=>b.category===c).length;
+    return `<div class="sidebar-cat-item" onclick="filterByCat('${c}')">${c}<span class="sidebar-cat-count">(${count})</span></div>`;
+  }).join('');
+  setTimeout(initReveal,80);
+});
+function filterByCat(cat){
+  filteredBlogs=INFLANAR.blogs.filter(b=>b.category===cat);
+  blogPage=1; renderBlogGrid(filteredBlogs);
+}
+function filterBlogs(){
+  const kw=document.getElementById('blog-kw').value.toLowerCase();
+  filteredBlogs=kw?INFLANAR.blogs.filter(b=>b.title.toLowerCase().includes(kw)):INFLANAR.blogs;
+  blogPage=1; renderBlogGrid(filteredBlogs);
+}
+function renderBlogGrid(data){
+  const start=(blogPage-1)*blogPer,end=start+blogPer,pageData=data.slice(start,end);
+  document.getElementById('blogs-grid').innerHTML=pageData.length
+    ? pageData.map(b=>blogCardHTML(b)).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-light)">No blogs found.</div>`;
+  const total=Math.ceil(data.length/blogPer);
+  document.getElementById('blog-pagination').innerHTML=[...Array(total)].map((_,i)=>
+    `<button class="page-btn ${i+1===blogPage?'active':''}" onclick="blogPage=${i+1};renderBlogGrid(filteredBlogs)">${i+1}</button>
+    `).join('')+(blogPage<total?`<button class="page-btn" onclick="blogPage=${blogPage+1};renderBlogGrid(filteredBlogs)">›</button>`:'');
+  setTimeout(initReveal,40);
+}
+</script>
+</body>
+</html>

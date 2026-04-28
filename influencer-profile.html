@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Influencer Profile — Inflanar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ── Profile Hero ──────────────────────────────────── */
+    .profile-hero {
+      background: var(--hero-grad);
+      padding: 36px 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-hero-inner {
+      display: grid;
+      grid-template-columns: 200px 1fr auto;
+      gap: 28px;
+      align-items: flex-start;
+      padding-bottom: 28px;
+    }
+
+    /* Avatar card */
+    .profile-avatar-card {
+      background: var(--white);
+      border-radius: var(--r-xl);
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+    .profile-avatar {
+      width: 120px; height: 120px;
+      border-radius: var(--r-lg);
+      object-fit: cover;
+      border: 3px solid var(--white);
+      box-shadow: var(--shadow-md);
+      background: var(--gray-200);
+      display: block;
+      margin: 0 auto 14px;
+    }
+    .profile-follower-row {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--gray-200);
+    }
+    .profile-follower-val {
+      font-size: 16px; font-weight: 800;
+      color: var(--text-dark);
+    }
+    .profile-follower-lbl {
+      font-size: 11px; color: var(--text-light);
+    }
+
+    /* Info col */
+    .profile-info {}
+    .profile-category-badge {
+      display: inline-block;
+      background: var(--purple);
+      color: var(--white);
+      font-size: 12px; font-weight: 700;
+      padding: 5px 14px; border-radius: var(--r-full);
+      margin-bottom: 10px;
+    }
+    .profile-name {
+      font-family: var(--ff-display);
+      font-size: clamp(26px,4vw,38px);
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+      line-height: 1.15;
+    }
+    .profile-member {
+      font-size: 13px; color: var(--text-mid);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .profile-reviews-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--orange);
+      color: var(--white); font-size: 12px; font-weight: 700;
+      padding: 4px 12px; border-radius: var(--r-full);
+      cursor: pointer;
+    }
+    /* Social Info */
+    .profile-social-section {
+      margin-top: 16px;
+    }
+    .profile-social-label {
+      font-size: 12px; font-weight: 600;
+      color: var(--text-mid); margin-bottom: 8px;
+    }
+    .profile-socials {
+      display: flex; gap: 8px;
+    }
+    .profile-social-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      border: none; transition: var(--t);
+      color: var(--white);
+    }
+    .psb-fb   { background: #1877F2; }
+    .psb-tt   { background: #010101; }
+    .psb-tw   { background: #1DA1F2; }
+    .psb-ig   { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .profile-social-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+    /* Right col — Contact Here btn */
+    .profile-actions {
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 10px;
+      padding-top: 4px;
+    }
+    .contact-here-btn {
+      background: var(--purple);
+      color: var(--white); border: none;
+      padding: 11px 22px; border-radius: var(--r-sm);
+      font-size: 13.5px; font-weight: 700;
+      cursor: pointer; transition: var(--t);
+      box-shadow: var(--shadow-md); white-space: nowrap;
+    }
+    .contact-here-btn:hover {
+      background: var(--purple-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(108,58,255,.4);
+    }
+
+    /* ── Job Stats Strip ───────────────────────────────── */
+    .job-stats-strip {
+      background: var(--white);
+      border-top: 1px solid var(--gray-200);
+      padding: 0;
+    }
+    .job-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 1px;
+      background: var(--gray-200);
+    }
+    .job-stat-card {
+      background: var(--white);
+      padding: 22px 20px;
+      text-align: center;
+    }
+    .job-stat-label {
+      font-size: 13px; color: var(--text-mid);
+      font-weight: 500; margin-bottom: 8px;
+    }
+    .job-stat-val {
+      font-family: var(--ff-display);
+      font-size: 28px; font-weight: 800; line-height: 1;
+    }
+    .jsv-green  { color: #22C55E; }
+    .jsv-orange { color: var(--orange); }
+    .jsv-red    { color: var(--pink); }
+    .jsv-purple { color: var(--purple); }
+
+    /* ── Body Layout ───────────────────────────────────── */
+    .profile-body {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 28px;
+      padding: 36px 0 80px;
+      align-items: start;
+    }
+
+    /* ── Left Sidebar ──────────────────────────────────── */
+    .profile-sidebar {
+      position: sticky; top: 80px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .profile-sidebar-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+    }
+    .sidebar-section-title {
+      font-family: var(--ff-display);
+      font-size: 17px; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 14px;
+    }
+    .about-text {
+      font-size: 13.5px; color: var(--text-light);
+      line-height: 1.75; margin-bottom: 22px;
+    }
+
+    /* Skills */
+    .skills-wrap {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 22px;
+    }
+    .skill-tag {
+      padding: 5px 14px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--r-sm);
+      font-size: 12px; font-weight: 500;
+      color: var(--text-mid); cursor: default;
+      transition: var(--t);
+    }
+    .skill-tag:hover {
+      border-color: var(--purple);
+      color: var(--purple);
+      background: rgba(108,58,255,.05);
+    }
+
+    /* Educations */
+    .edu-item {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .edu-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .edu-institution {
+      font-size: 14px; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 3px;
+    }
+    .edu-detail {
+      font-size: 12.5px; color: var(--text-light); margin-bottom: 2px;
+    }
+    .edu-years {
+      font-size: 12px; color: var(--purple); font-weight: 600;
+    }
+
+    /* Contact info */
+    .contact-info-row {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: var(--text-mid);
+      margin-bottom: 10px;
+    }
+    .contact-info-row:last-child { margin-bottom: 0; }
+    .ci-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(108,58,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; flex-shrink: 0;
+    }
+
+    /* ── Right Main Area ───────────────────────────────── */
+    .profile-main {}
+
+    /* Content Tabs */
+    .profile-tabs {
+      display: flex; gap: 0; margin-bottom: 24px;
+    }
+    .profile-tab {
+      padding: 10px 24px;
+      font-size: 13.5px; font-weight: 600;
+      cursor: pointer; border: none; background: none;
+      color: var(--text-mid);
+      border-bottom: 2.5px solid var(--gray-200);
+      margin-bottom: -1px;
+      transition: var(--t);
+    }
+    .profile-tab.active {
+      background: linear-gradient(135deg,var(--pink-dark),var(--pink));
+      color: var(--white);
+      border-radius: var(--r-sm) var(--r-sm) 0 0;
+      border-bottom-color: transparent;
+    }
+    .profile-tab:hover:not(.active) { color: var(--purple); }
+    .profile-tab-panel { display: none; }
+    .profile-tab-panel.active { display: block; }
+
+    /* Services grid inside profile */
+    .profile-services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    /* Portfolio grid */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 16px;
+    }
+    .portfolio-item {
+      border-radius: var(--r-md); overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--gray-200);
+      cursor: pointer;
+      transition: var(--t);
+    }
+    .portfolio-item:hover { transform: scale(1.03); box-shadow: var(--shadow-md); }
+    .portfolio-item img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .no-portfolio {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 60px;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    /* ── Responsive ────────────────────────────────────── */
+    @media(max-width:1050px) {
+      .profile-hero-inner { grid-template-columns: 160px 1fr; }
+      .profile-actions { display: none; }
+      .profile-body { grid-template-columns: 1fr; }
+      .profile-sidebar { position: static; }
+    }
+    @media(max-width:768px) {
+      .profile-hero-inner { grid-template-columns: 1fr; }
+      .profile-avatar-card { max-width: 200px; margin: 0 auto; }
+      .job-stats-grid { grid-template-columns: 1fr 1fr; }
+      .profile-services-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media(max-width:480px) {
+      .profile-tabs { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="navbar-placeholder"></div>
+
+<!-- ══════════════════════════════════════════════════════
+     PROFILE HERO BANNER
+══════════════════════════════════════════════════════ -->
+<section class="profile-hero">
+  <div class="container">
+    <div class="profile-hero-inner">
+
+      <!-- Avatar Card -->
+      <div class="profile-avatar-card">
+        <img class="profile-avatar" id="p-avatar" src="" alt=""
+          onerror="this.src='https://placehold.co/120x120/c8b8f5/6C3AFF?text=INF'">
+        <div class="profile-follower-row">
+          <div>
+            <div class="profile-follower-val" id="p-followers"></div>
+            <div class="profile-follower-lbl">Followers</div>
+          </div>
+          <div>
+            <div class="profile-follower-val" id="p-following"></div>
+            <div class="profile-follower-lbl">Following</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="profile-info">
+        <span class="profile-category-badge" id="p-category"></span>
+        <h1 class="profile-name" id="p-name"></h1>
+        <div class="profile-member">📅 Member Since: <span id="p-since"></span></div>
+        <div class="profile-reviews-badge" id="p-reviews-badge">
+          ⭐ Reviews <span id="p-reviews-count"></span>
+        </div>
+        <div class="profile-social-section">
+          <div class="profile-social-label">Social Info</div>
+          <div class="profile-socials" id="p-socials"></div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="profile-actions">
+        <button class="contact-here-btn" onclick="handleContact()">Contact Here</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Job Stats Strip -->
+  <div class="job-stats-strip">
+    <div class="container">
+      <div class="job-stats-grid" id="job-stats-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     PROFILE BODY
+══════════════════════════════════════════════════════ -->
+<div class="container">
+  <div class="profile-body">
+
+    <!-- ── LEFT SIDEBAR ───────────────────────────────── -->
+    <div class="profile-sidebar">
+      <div class="profile-sidebar-card">
+
+        <!-- About Me -->
+        <div class="sidebar-section-title">About Me</div>
+        <p class="about-text" id="p-about"></p>
+
+        <!-- Skills -->
+        <div class="sidebar-section-title">Skills</div>
+        <div class="skills-wrap" id="p-skills"></div>
+
+        <!-- Educations -->
+        <div class="sidebar-section-title">Educations</div>
+        <div id="p-educations"></div>
+
+        <!-- Contact -->
+        <div class="sidebar-section-title" style="margin-top:22px">Contact</div>
+        <div id="p-contact"></div>
+
+      </div>
+    </div>
+
+    <!-- ── RIGHT MAIN ──────────────────────────────────── -->
+    <div class="profile-main">
+
+      <!-- Tabs -->
+      <div class="profile-tabs">
+        <button class="profile-tab active" onclick="switchProfileTab('services',this)">My Service</button>
+        <button class="profile-tab" onclick="switchProfileTab('portfolio',this)">My Portfolio</button>
+      </div>
+
+      <!-- My Service panel -->
+      <div class="profile-tab-panel active" id="panel-services">
+        <div class="profile-services-grid" id="profile-services-grid"></div>
+      </div>
+
+      <!-- My Portfolio panel -->
+      <div class="profile-tab-panel" id="panel-portfolio">
+        <div class="portfolio-grid" id="portfolio-grid"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+
+<script src="data/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  const slug   = params.get('slug') || 'nasrun-nessa';
+  const p      = INFLANAR.influencer_profiles[slug] || INFLANAR.influencer_profiles['nasrun-nessa'];
+
+  document.title = `${p.name} — Inflanar`;
+
+  /* ── Hero ── */
+  document.getElementById('p-avatar').src       = p.avatar;
+  document.getElementById('p-avatar').alt       = p.name;
+  document.getElementById('p-category').textContent   = p.category;
+  document.getElementById('p-name').textContent       = p.name;
+  document.getElementById('p-since').textContent      = p.member_since;
+  document.getElementById('p-followers').textContent  = p.followers;
+  document.getElementById('p-following').textContent  = p.following;
+  document.getElementById('p-reviews-count').textContent = p.reviews_count;
+
+  /* Social buttons */
+  const socialDefs = [
+    { cls:'psb-fb', icon:'f',  key:'facebook'  },
+    { cls:'psb-tt', icon:'🎵', key:'tiktok'    },
+    { cls:'psb-tw', icon:'𝕏', key:'twitter'   },
+    { cls:'psb-ig', icon:'📷', key:'instagram' }
+  ];
+  document.getElementById('p-socials').innerHTML = socialDefs.map(s =>
+    `<a href="${p.socials[s.key]||'#'}" class="profile-social-btn ${s.cls}">${s.icon}</a>`
+  ).join('');
+
+  /* ── Job stats ── */
+  const jsDefs = [
+    { label:'Active Job',   valKey:'active',   cls:'jsv-green'  },
+    { label:'Pending Job',  valKey:'pending',  cls:'jsv-orange' },
+    { label:'Cancel Job',   valKey:'cancel',   cls:'jsv-red'    },
+    { label:'Complete Job', valKey:'complete', cls:'jsv-purple' }
+  ];
+  document.getElementById('job-stats-grid').innerHTML = jsDefs.map(j => `
+    <div class="job-stat-card">
+      <div class="job-stat-label">${j.label}</div>
+      <div class="job-stat-val ${j.cls}">${p.job_stats[j.valKey]}</div>
+    </div>`).join('');
+
+  /* ── Sidebar ── */
+  document.getElementById('p-about').textContent = p.about;
+
+  document.getElementById('p-skills').innerHTML =
+    p.skills.map(s => `<span class="skill-tag">${s}</span>`).join('');
+
+  document.getElementById('p-educations').innerHTML =
+    p.educations.map(e => `
+      <div class="edu-item">
+        <div class="edu-institution">${e.institution}</div>
+        <div class="edu-detail">${e.detail}</div>
+        <div class="edu-years">${e.years}</div>
+      </div>`).join('');
+
+  document.getElementById('p-contact').innerHTML = `
+    <div class="contact-info-row">
+      <div class="ci-icon">📞</div>
+      <span>${p.contact.phone}</span>
+    </div>
+    <div class="contact-info-row">
+      <div class="ci-icon">✉️</div>
+      <span>${p.contact.email}</span>
+    </div>
+    <div class="contact-info-row">
+      <div class="ci-icon">📍</div>
+      <span>${p.contact.location}</span>
+    </div>`;
+
+  /* ── Services tab ── */
+  const profileServices = INFLANAR.services.filter(s => p.services.includes(s.id));
+  document.getElementById('profile-services-grid').innerHTML =
+    profileServices.length
+      ? profileServices.map(s => serviceCardHTML(s)).join('')
+      : `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-light)">No services yet.</div>`;
+
+  /* ── Portfolio tab ── */
+  document.getElementById('portfolio-grid').innerHTML =
+    p.portfolio.length
+      ? p.portfolio.map(item => `
+          <div class="portfolio-item">
+            <img src="${item.img}" alt="${item.title}"
+              onerror="this.src='https://placehold.co/280x210/F5F3FF/6C3AFF?text=${encodeURIComponent(item.title)}'">
+          </div>`).join('')
+      : `<div class="no-portfolio">No portfolio items yet.</div>`;
+
+  setTimeout(initReveal, 80);
+});
+
+/* ── Tab switch ── */
+function switchProfileTab(id, btn) {
+  document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.profile-tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+  setTimeout(initReveal, 40);
+}
+
+/* ── Contact ── */
+function handleContact() {
+  const btn = document.querySelector('.contact-here-btn');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '✓ Message Sent!';
+    setTimeout(() => { btn.textContent = 'Contact Here'; btn.disabled = false; }, 2500);
+  }, 800);
+}
+</script>
+</body>
+</html>

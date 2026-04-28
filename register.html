@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Register — Inflanar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-form-side">
+      <h1 class="auth-title">SignUp</h1>
+      <p class="auth-sub">Welcome to Inflanar</p>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab(this)">Client</button>
+        <button class="auth-tab" onclick="switchTab(this)">Influencer</button>
+      </div>
+      <form onsubmit="handleReg(event)">
+        <label class="auth-label">Name*</label>
+        <input type="text" class="auth-input" id="r-name" placeholder="Name" required>
+        <label class="auth-label">Email*</label>
+        <input type="email" class="auth-input" id="r-email" placeholder="Email" required>
+        <label class="auth-label">Password*</label>
+        <input type="password" class="auth-input" id="r-pw" placeholder="Password" required>
+        <label class="auth-label">Confirm Password*</label>
+        <input type="password" class="auth-input" id="r-pw2" placeholder="Confirm Password" required>
+        <div class="auth-agree">
+          <input type="checkbox" required>
+          <label>I agree with the <a href="terms.html">Terms and Conditions</a></label>
+        </div>
+        <button type="submit" class="auth-submit" id="reg-btn">Create Account</button>
+      </form>
+      <div class="auth-footer">Already have an account? <a href="login.html">Login</a></div>
+    </div>
+    <div>
+      <img class="auth-visual-img" src="assets/img/misc/auth-illustration.jpg" alt="Register"
+        onerror="this.src='https://placehold.co/400x380/c8b8f5/6C3AFF?text=SignUp+Illustration'">
+    </div>
+  </div>
+</div>
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+<script src="data/data.js"></script><script src="js/main.js"></script>
+<script>
+function switchTab(el){document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
+function handleReg(e){
+  e.preventDefault();
+  if(document.getElementById('r-pw').value!==document.getElementById('r-pw2').value){alert('Passwords do not match');return;}
+  const btn=document.getElementById('reg-btn');
+  btn.textContent='Creating...'; btn.disabled=true;
+  setTimeout(()=>{btn.textContent='✓ Account Created!';setTimeout(()=>{btn.textContent='Create Account';btn.disabled=false;},2000);},1000);
+}
+</script>
+</body>
+</html>

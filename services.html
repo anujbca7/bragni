@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Services — Inflanar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .services-layout{display:grid;grid-template-columns:280px 1fr;gap:28px;padding:36px 0 80px;align-items:start}
+    .services-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:900px){.services-layout{grid-template-columns:1fr}.sidebar-box{display:none}}
+    @media(max-width:540px){.services-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+<div id="page-hero-placeholder"></div>
+<div class="container">
+  <div class="services-layout">
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="sidebar-box">
+        <div class="sidebar-title">Search</div>
+        <div class="sidebar-search">
+          <input type="text" id="svc-search" placeholder="Search" oninput="filterServices()">
+          <button class="sidebar-search-btn" onclick="filterServices()">🔍</button>
+        </div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">Select Category</div>
+        <div id="svc-cats"></div>
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-title">Price Filter</div>
+        <input type="range" class="price-range" id="price-range" min="0" max="100" value="100" oninput="updatePrice(this.value);filterServices()">
+        <div class="price-label">Price: <span id="price-label">0 - 100</span></div>
+        <button class="btn btn-pink" style="width:100%;justify-content:center;margin-top:14px;padding:11px;font-size:13px" onclick="filterServices()">Search Here</button>
+      </div>
+    </aside>
+    <!-- GRID -->
+    <div>
+      <div class="services-grid" id="svc-grid"></div>
+      <div class="pagination" id="svc-pagination" style="margin-top:32px"></div>
+    </div>
+  </div>
+</div>
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+<script src="data/data.js"></script><script src="js/main.js"></script>
+<script>
+let svcPage=1; const svcPer=8;
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPageHero('Services',[{label:'Home',href:'index.html'},{label:'Services',href:'#'}]);
+  const cats=[...new Set(INFLANAR.services.map(s=>s.category))];
+  document.getElementById('svc-cats').innerHTML=cats.map(c=>{
+    const count=INFLANAR.services.filter(s=>s.category===c).length;
+    return `<label class="sidebar-cat-item"><input type="checkbox" value="${c}" onchange="filterServices()"> ${c} <span class="sidebar-cat-count">(${count})</span></label>`;
+  }).join('');
+  filterServices();
+  setTimeout(initReveal,80);
+});
+function updatePrice(v){document.getElementById('price-label').textContent=`0 - ${v}`}
+function filterServices(){
+  const kw=document.getElementById('svc-search').value.toLowerCase();
+  const maxP=parseFloat(document.getElementById('price-range').value);
+  const checked=[...document.querySelectorAll('#svc-cats input:checked')].map(i=>i.value);
+  let data=INFLANAR.services.filter(s=>{
+    if(kw&&!s.title.toLowerCase().includes(kw)) return false;
+    if(checked.length&&!checked.includes(s.category)) return false;
+    if(s.price>maxP) return false;
+    return true;
+  });
+  const start=(svcPage-1)*svcPer,end=start+svcPer,pageData=data.slice(start,end);
+  document.getElementById('svc-grid').innerHTML=pageData.length
+    ? pageData.map(s=>serviceCardHTML(s)).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-light)">No services found.</div>`;
+  const total=Math.ceil(data.length/svcPer);
+  document.getElementById('svc-pagination').innerHTML=[...Array(total)].map((_,i)=>
+    `<button class="page-btn ${i+1===svcPage?'active':''}" onclick="svcPage=${i+1};filterServices()">${i+1}</button>`).join('');
+  setTimeout(initReveal,40);
+}
+</script>
+</body>
+</html>

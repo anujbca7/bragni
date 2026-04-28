@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>FAQ — Inflanar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+<div id="page-hero-placeholder"></div>
+<!-- FAQ -->
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div class="faq-inner">
+      <div class="faq-img reveal-left">
+        <img src="assets/img/misc/faq-img.jpg" alt="FAQ"
+          onerror="this.src='https://placehold.co/480x380/c8b8f5/6C3AFF?text=FAQ'">
+      </div>
+      <div class="reveal-right">
+        <div class="faq-accordion" id="faq-accordion"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- TESTIMONIALS -->
+<section class="section" style="background:var(--light-bg)">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label">Testimonial</div>
+      <h2 class="sec-title">What Our Customers Say?</h2>
+      <div class="sec-divider"></div>
+    </div>
+    <div class="testi-grid" style="margin-top:40px" id="testi-grid"></div>
+    <div class="testi-dots" id="testi-dots" style="margin-top:20px"></div>
+  </div>
+</section>
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+<script src="data/data.js"></script><script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPageHero('FAQ',[{label:'Home',href:'index.html'},{label:'FAQ',href:'#'}]);
+  buildFaqAccordion(INFLANAR.faqs,'faq-accordion');
+  document.getElementById('testi-grid').innerHTML=INFLANAR.testimonials.slice(0,2).map(t=>`
+    <div class="testi-card reveal">
+      <div class="testi-card-top">
+        <div class="testi-company">${t.company}</div>
+        <div class="testi-quote">"</div>
+      </div>
+      <div class="testi-text">${t.text}</div>
+      <div class="testi-author">
+        <img class="testi-avatar" src="${t.avatar}" alt="${t.name}"
+          onerror="this.src='https://placehold.co/42x42/c8b8f5/6C3AFF?text=A'">
+        <div><div class="testi-name">${t.name}</div><div class="testi-role">${t.role}</div></div>
+      </div>
+    </div>`).join('');
+  document.getElementById('testi-dots').innerHTML=`
+    <div class="testi-dot active"></div>
+    <div class="testi-dot"></div>
+    <div class="testi-dot"></div>`;
+  setTimeout(initReveal,80);
+});
+</script>
+</body>
+</html>

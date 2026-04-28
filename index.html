@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Inflanar — Influencer Hiring Platform</title>
+  <meta name="description" content="Find the right influencer for your business. Connect brands with top creators.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .services-grid-home{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:40px}
+    .blogs-grid-home{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px}
+    @media(max-width:900px){.services-grid-home{grid-template-columns:1fr}.blogs-grid-home{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.blogs-grid-home{grid-template-columns:1fr}}
+    .hero-clients-count{font-weight:700;color:var(--purple)}
+  </style>
+</head>
+<body>
+
+<div id="navbar-placeholder"></div>
+
+<!-- ═══════════════════════════════════════════ HERO ═══ -->
+<section class="home-hero" id="home">
+  <div class="container">
+    <div class="home-hero-inner">
+      <div class="home-hero-content reveal-left">
+        <div class="home-hero-label" id="hero-label"></div>
+        <h1 class="home-hero-title" id="hero-title"></h1>
+        <div class="hero-search">
+          <input type="text" id="hero-search-input" placeholder="" oninput="filterHeroSearch()">
+          <button class="hero-search-btn" onclick="doHeroSearch()">Search</button>
+        </div>
+        <div class="hero-tags" id="hero-tags"></div>
+        <div class="hero-clients">
+          <div class="hero-avatars" id="hero-avatars"></div>
+          <div style="margin-left:12px">
+            <span class="hero-clients-count" id="hero-count"></span>
+            <span style="font-size:13px;color:var(--text-mid)"> Satisfied Clients</span>
+          </div>
+        </div>
+      </div>
+      <div class="home-hero-visual reveal-right">
+        <img class="home-hero-img" src="assets/img/hero/hero-person.png" alt="Influencer"
+          onerror="this.src='https://placehold.co/400x460/c8b8f5/6C3AFF?text=Influencer'">
+        <!-- Floating badges -->
+        <div class="hero-social-float" style="top:15%;right:0">😊 Influencer</div>
+        <div class="hero-social-float" style="top:45%;left:-10%">❤️ Marketing</div>
+        <div class="hero-social-float" style="top:70%;right:5%;font-size:22px;padding:10px">🐦</div>
+        <div class="hero-social-float" style="top:28%;left:0%;font-size:22px;padding:10px">📷</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ CATEGORIES ═══ -->
+<section class="categories-section" id="categories">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label" id="cat-label"></div>
+      <h2 class="sec-title" id="cat-title"></h2>
+      <div class="sec-divider"></div>
+    </div>
+    <div class="category-grid" id="category-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ FEATURES ═══ -->
+<section class="features-section section" id="features">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label" id="feat-label"></div>
+      <h2 class="sec-title" id="feat-title"></h2>
+      <div class="sec-divider"></div>
+      <p class="sec-sub" id="feat-sub"></p>
+    </div>
+    <div class="feature-grid" id="feature-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ INFLUENCERS ═══ -->
+<section class="section" style="background:var(--white)" id="influencers">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label" id="inf-label"></div>
+      <h2 class="sec-title" id="inf-title"></h2>
+      <div class="sec-divider"></div>
+      <p class="sec-sub" id="inf-sub"></p>
+    </div>
+    <div class="influencer-grid" id="influencer-grid"></div>
+    <div class="tc" style="margin-top:32px">
+      <a href="influencers.html" class="btn btn-outline" style="padding:12px 36px">View All</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ SERVICES ═══ -->
+<section class="section" style="background:var(--light-bg)" id="services">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label" id="svc-label"></div>
+      <h2 class="sec-title" id="svc-title"></h2>
+      <div class="sec-divider"></div>
+      <p class="sec-sub" id="svc-sub"></p>
+    </div>
+    <div class="services-grid-home" id="services-grid"></div>
+    <div class="tc" style="margin-top:32px">
+      <a href="services.html" class="btn btn-outline" style="padding:12px 36px">View All</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ HOW IT WORKS ═══ -->
+<section class="steps-section section" id="how-it-works">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label" id="how-label"></div>
+      <h2 class="sec-title" id="how-title"></h2>
+      <div class="sec-divider"></div>
+      <p class="sec-sub" id="how-sub"></p>
+    </div>
+    <div class="steps-grid" id="steps-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ PLATFORM PROMO ═══ -->
+<section class="platform-section section">
+  <div class="container">
+    <div class="platform-inner">
+      <div class="reveal-left">
+        <div class="sec-label" style="justify-content:flex-start">Creator Platform</div>
+        <h2 class="platform-title" id="platform-title"></h2>
+        <p class="platform-desc" id="platform-desc"></p>
+        <a href="about.html" class="btn btn-primary" id="platform-cta" style="padding:12px 32px">Discover More</a>
+      </div>
+      <div class="reveal-right">
+        <div class="platform-video">
+          <img src="assets/img/misc/video-thumb.jpg" alt="Platform"
+            onerror="this.src='https://placehold.co/520x390/c8b8f5/6C3AFF?text=Platform+Preview'">
+          <button class="platform-play"  onclick="openVideoModal('oRhtJTFB5gQ','How DocMent Works')">▶</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ SOCIAL STATS ═══ -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="stats-grid" id="stats-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ BRAND PARTNERS ═══ -->
+<section class="partners-section section">
+  <div class="container">
+    <div class="partners-inner">
+      <div class="reveal-left">
+        <div class="sec-label" style="justify-content:flex-start">Our Partners</div>
+        <h2 class="sec-title" id="partners-title"></h2>
+        <p class="sec-sub" style="margin-bottom:24px" id="partners-desc"></p>
+        <a href="contact.html" class="btn btn-primary" style="padding:12px 32px">Contact Us</a>
+      </div>
+      <div class="reveal-right">
+        <div class="partners-logos" id="partners-logos"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ FAQ ═══ -->
+<section class="section" style="background:var(--light-bg)" id="faq">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label" id="faq-label"></div>
+      <h2 class="sec-title" id="faq-title"></h2>
+      <div class="sec-divider"></div>
+    </div>
+    <div class="faq-inner" style="margin-top:40px">
+      <div class="faq-img reveal-left">
+        <img src="assets/img/misc/faq-img.jpg" alt="FAQ"
+          onerror="this.src='https://placehold.co/480x380/c8b8f5/6C3AFF?text=FAQ'">
+      </div>
+      <div class="reveal-right">
+        <div class="faq-accordion" id="home-faq"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ TESTIMONIALS ═══ -->
+<section class="section" style="background:var(--white)">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label" id="testi-label"></div>
+      <h2 class="sec-title" id="testi-title"></h2>
+      <div class="sec-divider"></div>
+    </div>
+    <div class="testi-slider-wrap">
+      <div class="testi-grid" id="testi-grid"></div>
+      <div class="testi-dots" id="testi-dots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ LATEST BLOGS ═══ -->
+<section class="section" style="background:var(--light-bg)">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="sec-label" id="blog-label"></div>
+      <h2 class="sec-title" id="blog-title"></h2>
+      <div class="sec-divider"></div>
+      <p class="sec-sub" id="blog-sub"></p>
+    </div>
+    <div class="blogs-grid-home" id="blogs-grid"></div>
+  </div>
+</section>
+
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+
+<script src="data/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  buildHero();
+  buildCategories();
+  buildFeatures();
+  buildInfluencers();
+  buildServices();
+  buildSteps();
+  buildPlatform();
+  buildStats();
+  buildPartners();
+  buildFAQ();
+  buildTestimonials();
+  buildBlogs();
+  setTimeout(initReveal, 100);
+});
+
+function buildHero() {
+  const h = INFLANAR.hero;
+  document.getElementById('hero-label').textContent = h.label;
+  document.getElementById('hero-title').textContent = h.title;
+  document.getElementById('hero-search-input').placeholder = h.search_placeholder;
+  document.getElementById('hero-count').textContent = h.satisfied_clients;
+  document.getElementById('hero-tags').innerHTML =
+    `<span class="hero-tag-label">Popular:</span>` +
+    h.popular_tags.map(t => `<span class="hero-tag" onclick="document.getElementById('hero-search-input').value='${t}'">${t}</span>`).join('');
+  // Placeholder avatars
+  document.getElementById('hero-avatars').innerHTML =
+    Array(4).fill().map((_, i) =>
+      `<div class="hero-avatar"><img src="assets/img/influencers/inf-${i+1}.png" alt=""
+        onerror="this.src='https://placehold.co/36x36/${['c8b8f5','f5b8d0','b8e4f0','f5d0a0'][i]}/666?text=A'"></div>`
+    ).join('');
+}
+
+function buildCategories() {
+  document.getElementById('cat-label').textContent = INFLANAR.categories_section.label;
+  document.getElementById('cat-title').textContent = INFLANAR.categories_section.title;
+  document.getElementById('category-grid').innerHTML = INFLANAR.categories.map((c, i) => `
+    <a href="influencers.html?cat=${c.slug}" class="category-chip reveal" style="transition-delay:${(i%5)*.08}s">
+      <div class="category-chip-icon">${c.icon}</div>
+      <div class="category-chip-name">${c.name}</div>
+      <div class="category-chip-count">${c.count} Influencers</div>
+    </a>`).join('');
+}
+
+function buildFeatures() {
+  document.getElementById('feat-label').textContent = INFLANAR.features_section.label;
+  document.getElementById('feat-title').textContent = INFLANAR.features_section.title;
+  document.getElementById('feat-sub').textContent  = INFLANAR.features_section.sub;
+  document.getElementById('feature-grid').innerHTML = INFLANAR.features.map((f, i) => `
+    <div class="feature-card reveal" style="transition-delay:${i*.1}s">
+      <div class="feature-card-icon">${f.icon}</div>
+      <div class="feature-card-title">${f.title}</div>
+      <div class="feature-card-desc">${f.desc}</div>
+    </div>`).join('');
+}
+
+function buildInfluencers() {
+  document.getElementById('inf-label').textContent = INFLANAR.influencers_section.label;
+  document.getElementById('inf-title').textContent = INFLANAR.influencers_section.title;
+  document.getElementById('inf-sub').textContent   = INFLANAR.influencers_section.sub;
+  document.getElementById('influencer-grid').innerHTML =
+    INFLANAR.influencers.map(inf => influencerCardHTML(inf)).join('');
+}
+
+function buildServices() {
+  document.getElementById('svc-label').textContent = INFLANAR.services_section.label;
+  document.getElementById('svc-title').textContent = INFLANAR.services_section.title;
+  document.getElementById('svc-sub').textContent   = INFLANAR.services_section.sub;
+  document.getElementById('services-grid').innerHTML =
+    INFLANAR.services.slice(0, 6).map(s => serviceCardHTML(s)).join('');
+}
+
+function buildSteps() {
+  document.getElementById('how-label').textContent = INFLANAR.how_section.label;
+  document.getElementById('how-title').textContent = INFLANAR.how_section.title;
+  document.getElementById('how-sub').textContent   = INFLANAR.how_section.sub;
+  document.getElementById('steps-grid').innerHTML = INFLANAR.steps.map((s, i) => `
+    <div class="step-card reveal" style="transition-delay:${i*.1}s">
+      <div class="step-num">${s.num}</div>
+      <img class="step-img" src="${s.img}" alt="${s.title}"
+        onerror="this.src='https://placehold.co/280x158/F5F3FF/6C3AFF?text=Step+${s.num}'">
+      <div class="step-title">${s.title}</div>
+      <div class="step-desc">${s.desc}</div>
+    </div>`).join('');
+}
+
+function buildPlatform() {
+  const p = INFLANAR.platform_section;
+  document.getElementById('platform-title').textContent = p.title;
+  document.getElementById('platform-desc').textContent  = p.desc;
+  document.getElementById('platform-cta').textContent   = p.cta;
+}
+
+function buildStats() {
+  document.getElementById('stats-grid').innerHTML = INFLANAR.social_stats.map(s => `
+    <div class="stat-box">
+      <div class="stat-icon">${['🔵','🐦','🎵','📷'][INFLANAR.social_stats.indexOf(s)]}</div>
+      <div>
+        <div class="stat-val">${s.count}</div>
+        <div class="stat-platform">${s.platform} Followers</div>
+      </div>
+    </div>`).join('');
+}
+
+function buildPartners() {
+  const p = INFLANAR.partners_section;
+  document.getElementById('partners-title').textContent = p.title;
+  document.getElementById('partners-desc').textContent  = p.desc;
+  document.getElementById('partners-logos').innerHTML = INFLANAR.partners.map(p => `
+    <div class="partner-logo">
+      <img src="${p.img}" alt="${p.name}"
+        onerror="this.outerHTML='<span class=partner-logo-text>${p.name}</span>'">
+    </div>`).join('');
+}
+
+function buildFAQ() {
+  document.getElementById('faq-label').textContent = INFLANAR.faq_section.label;
+  document.getElementById('faq-title').textContent = INFLANAR.faq_section.title;
+  buildFaqAccordion(INFLANAR.faqs, 'home-faq');
+}
+
+function buildTestimonials() {
+  document.getElementById('testi-label').textContent = INFLANAR.testi_section.label;
+  document.getElementById('testi-title').textContent = INFLANAR.testi_section.title;
+  let cur = 0;
+  const pairs = [];
+  for (let i = 0; i < INFLANAR.testimonials.length; i += 2)
+    pairs.push(INFLANAR.testimonials.slice(i, i + 2));
+
+  function renderTesti(idx) {
+    document.getElementById('testi-grid').innerHTML = pairs[idx].map(t => `
+      <div class="testi-card reveal">
+        <div class="testi-card-top">
+          <div class="testi-company">
+            <img src="${t.logo}" alt="${t.company}"
+              onerror="this.style.display='none'">
+            ${t.company}
+          </div>
+          <div class="testi-quote">"</div>
+        </div>
+        <div class="testi-text">${t.text}</div>
+        <div class="testi-author">
+          <img class="testi-avatar" src="${t.avatar}" alt="${t.name}"
+            onerror="this.src='https://placehold.co/42x42/c8b8f5/6C3AFF?text=${t.name.split(' ').map(n=>n[0]).join('')}'">
+          <div>
+            <div class="testi-name">${t.name}</div>
+            <div class="testi-role">${t.role}</div>
+          </div>
+        </div>
+      </div>`).join('');
+    setTimeout(initReveal, 50);
+    document.querySelectorAll('.testi-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  document.getElementById('testi-dots').innerHTML = pairs.map((_, i) =>
+    `<div class="testi-dot ${i===0?'active':''}" onclick="changeTesti(${i})"></div>`).join('');
+  renderTesti(0);
+  window.changeTesti = (idx) => { cur = idx; renderTesti(idx); };
+  setInterval(() => { cur = (cur + 1) % pairs.length; renderTesti(cur); }, 5000);
+}
+
+function buildBlogs() {
+  document.getElementById('blog-label').textContent = INFLANAR.blogs_section.label;
+  document.getElementById('blog-title').textContent = INFLANAR.blogs_section.title;
+  document.getElementById('blog-sub').textContent   = INFLANAR.blogs_section.sub;
+  document.getElementById('blogs-grid').innerHTML =
+    INFLANAR.blogs.slice(0, 4).map(b => blogCardHTML(b)).join('');
+}
+
+function doHeroSearch() {
+  const val = document.getElementById('hero-search-input').value.trim();
+  if (val) window.location.href = `influencers.html?q=${encodeURIComponent(val)}`;
+  else window.location.href = 'influencers.html';
+}
+function filterHeroSearch() {}
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Privacy Policy — Inflanar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+<div id="page-hero-placeholder"></div>
+<div class="container">
+  <div class="policy-content reveal" id="privacy-content"></div>
+</div>
+<div id="cta-placeholder"></div>
+<div id="footer-placeholder"></div>
+<script src="data/data.js"></script><script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  renderPageHero('Privacy Policy',[{label:'Home',href:'index.html'},{label:'Privacy Policy',href:'#'}]);
+  renderPolicyContent(INFLANAR.privacy.content,'privacy-content');
+  setTimeout(initReveal,80);
+});
+</script>
+</body>
+</html>
